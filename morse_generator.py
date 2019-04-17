@@ -1,14 +1,22 @@
 """Generates a .wav file of a message in morse."""
 
+import argparse
 import numpy as np
 from scipy.io import wavfile
 import matplotlib.pyplot as plt
-import wave
 
-message = "Hello World"
-time_unit = 0.05  # Dot = 0.1 seconds
+parser = argparse.ArgumentParser(description='')
+parser.add_argument('-m', '--message', nargs='+', type=str, default='Hello World', help='Message')
+parser.add_argument('-n', '--filename', type=str, default='morse_out', help='File name')
+parser.add_argument('-f', '--frequency', type=int, default=1000, help='Frequency of tone in Hz')
+parser.add_argument('-t', '--time_unit', type=float, default=0.2, help='Length of a dot in seconds')
+args = parser.parse_args()
+
+message = ' '.join(args.message)
+filename = args.filename + '.wav'
+time_unit = args.time_unit
+tone_freq = args.frequency
 audio_rate = 44100
-tone_freq = 1000  # Frequency of tone when triggered
 
 # Morse translator; 0 = dot, 1 = dash
 morse = {'a': (0, 1),
@@ -82,7 +90,7 @@ for trigger in signal:
 audio = np.asarray(audio)
 audio *= 1000
 audio = np.asarray(audio, dtype=np.int16)
-wavfile.write('morse_out.wav', audio_rate, audio)
+wavfile.write(filename, audio_rate, audio)
 
 # Show waveform
 plt.plot(t_array, audio)
