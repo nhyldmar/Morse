@@ -1,4 +1,5 @@
 """Generates a .wav file of a message in morse."""
+# TODO: Find a way to parse "
 
 import argparse
 import numpy as np
@@ -41,7 +42,25 @@ morse = {'a': (0, 1),
          '7': (1, 1, 0, 0, 0),
          '8': (1, 1, 1, 0, 0),
          '9': (1, 1, 1, 1, 0),
-         '0': (1, 1, 1, 1, 1)}
+         '0': (1, 1, 1, 1, 1),
+         '.': (0, 1, 0, 1, 0, 1),
+         ',': (1, 1, 0, 0, 1, 1),
+         '?': (0, 0, 1, 1, 0, 0),
+         '\'': (0, 1, 1, 1, 1, 0),
+         '!': (1, 0, 1, 0, 1, 1),
+         '/': (1, 0, 0, 1, 0),
+         '(': (1, 0, 1, 1, 0),
+         ')': (1, 0, 1, 1, 0, 1),
+         '&': (0, 1, 0, 0, 0),
+         ':': (1, 1, 1, 0, 0, 0),
+         ';': (1, 0, 1, 0, 1, 0),
+         '=': (1, 0, 0, 0, 1),
+         '+': (0, 1, 0, 1, 0),
+         '-': (1, 0, 0, 0, 0, 1),
+         '_': (0, 0, 1, 1, 0, 1),
+         '\"': (0, 1, 0, 0, 1, 0),
+         '$': (0, 0, 0, 1, 0, 0, 1),
+         '@': (0, 1, 1, 0, 1, 0)}
 
 
 def get_signal(message):
@@ -72,8 +91,6 @@ def get_signal(message):
 def get_waveform(signal):
     """Generates the waveform for a given signal"""
     signal = np.asarray(signal, dtype=np.int16)
-
-    chunk = time_unit * audio_rate  # Samples in one time unit
 
     tone_t_array = np.arange(0, time_unit, 1 / audio_rate)
     tone = np.sin(2 * np.pi * tone_freq * tone_t_array)
